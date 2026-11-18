@@ -1,0 +1,12 @@
+- name: Run job from jcllib
+  hosts: zos
+  gather_facts: no
+  collections:
+    - ibm.ibm_zos_core
+  environment: "{{ environment_vars }}"
+   
+  tasks:
+    - include_tasks: tasks/submit_jcl.yml 
+      vars:
+        src: GAMA04.LAB.JCL(CRQSAM1)
+        acceptable_cond_code: 4

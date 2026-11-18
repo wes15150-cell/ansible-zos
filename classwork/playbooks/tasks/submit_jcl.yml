@@ -1,0 +1,33 @@
+  - name: Submit JCL to z/OS
+    hosts: zoslab
+    gather_facts: false
+
+    environment: '{{ environment_vars }}"
+ 
+    collections: 
+       -ibm.ibm_zos_core
+tasks:
+  - name: SUBMIT JCL member
+      zos_job_submit: 
+        src: GAMA04.JCL(CRQSAM1) 
+        location: DATA_SET
+        wait_time_s: 60
+        return_output: true
+      register: job_result
+    
+  - name: extact JOB ID 
+    set_fact: 
+         job_id: "{{ job_result.jobs[0].job_id}}"
+
+  - name: display job id 
+     debug:
+     msg: "submitted job id is {{ job_id }}"
+
+  - name: fetch job output (spool)
+    zos_job_output:
+           job_id: "{{ job_id }}"
+    register: spool_output
+
+  - name: print spool output
+    debug:
+      var: spool_output   
