@@ -21,7 +21,7 @@
 
 - name: Render JCL on the control node
   ansible.builtin.template:
-    src: provdev.jcl.j2
+    src: provdev.jcl.w1
     dest: "{{ jcl_path }}"
   delegate_to: localhost
 
